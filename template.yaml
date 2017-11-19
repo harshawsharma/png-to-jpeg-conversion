@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+
+Parameters:
+    CodeBucketName:
+        Type: String
+        Description: "S3 Bucket that holds your lambda code"
+    CodeKey:
+        Type: String
+        Description: "Lambda code and supporting packages in .zip format"
+    ImageBucketName:
+        Type: String
+        Description: "Provide a unique bucket name to create a new bucket to hold your source png and converted jpeg images"
+
+
+
+Resources:
+  ImageConversionFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.6
+      CodeUri:
+        Bucket: !Ref CodeBucketName
+        Key: !Ref CodeKey
+      MemorySize: 128
+      Timeout: 3
+      Policies:
+        - S3CrudPolicy:
+          BucketName:
+             Ref: Bucket
+      Events:
+        PutPNGObjectEvent:
+          Type: S3
+          Properties:
+            Bucket:
+               Ref: Bucket
+            Events:
+              - 's3:ObjectCreated:Put'
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: .png
+
+  #this creates a new s3 bucket with the name specified in the parameter
+  Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Ref ImageBucketName
+

@@ -8,14 +8,12 @@ import PIL.Image
 
 s3_client = boto3.client('s3')
 
-
 def convert_image(image_path, resized_path):
     with Image.open(image_path) as image:
         rgb_image = image.convert('RGB')
         rgb_image.save(resized_path)
 
-
-def handler(event, context):
+def lambda_handler(event, context):
     for record in event['Records']:
 
         bucket = record['s3']['bucket']['name']
@@ -27,4 +25,4 @@ def handler(event, context):
         upload_path = '/tmp/{}{}.jpg'.format(uuid.uuid4(), key)
         convert_image(download_path, upload_path)
 
-        s3_client.upload_file(upload_path, '{}'.format(bucket), 'jpeg/{}.jpg'.format(key))
+        s3_client.upload_file(upload_path, '{}'.format(bucket), '{}.jpg'.format(key))
