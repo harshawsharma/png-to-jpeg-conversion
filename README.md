@@ -12,7 +12,7 @@ Download the python file 'lambda_function.py' from this repo and follow the step
 
 - 1 Lambda Function
 - 1 IAM Role with 2 Policies
-- 1 Lambda Trigger, that triggers the created lambda function whenever a .png file is uploaded using the PUTObject call
+- 1 S3-Lambda Trigger
 
 ## High Level Flow
 
