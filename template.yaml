@@ -15,6 +15,10 @@ Parameters:
 
 
 Resources:
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref ImageBucketName
 
   ImageConversionFunction:
     Type: AWS::Serverless::Function
@@ -42,7 +46,4 @@ Resources:
                 - Name: suffix
                   Value: ".png"
 
-  Bucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Ref ImageBucketName
+
