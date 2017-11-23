@@ -15,11 +15,6 @@ Parameters:
 
 
 Resources:
-  Bucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName:
-          Fn::Sub: "${AWS::StackName}-imagebucket"
 
   ImageConversionFunction:
     Type: AWS::Serverless::Function
@@ -29,12 +24,10 @@ Resources:
       CodeUri:
         Bucket: CodeBucketName
         Key: CodeKey
-      MemorySize: 128
-      Timeout: 3
       Policies:
       - S3CrudPolicy:
-          BucketName:
-            Fn::Sub: "${AWS::StackName}-imagebucket"
+          BucketName: !Ref ImageBucketName
+
       Events:
         PutPNGObjectEvent:
           Type: S3
@@ -49,3 +42,7 @@ Resources:
                 - Name: suffix
                   Value: ".png"
 
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref ImageBucketName
