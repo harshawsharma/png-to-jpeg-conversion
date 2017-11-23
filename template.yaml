@@ -18,7 +18,8 @@ Resources:
   Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: ImageBucketName
+      BucketName:
+          Fn::Sub: "${AWS::StackName}-imagebucket"
 
   ImageConversionFunction:
     Type: AWS::Serverless::Function
@@ -33,7 +34,7 @@ Resources:
       Policies:
       - S3CrudPolicy:
           BucketName:
-            Ref: Bucket
+            Fn::Sub: "${AWS::StackName}-imagebucket"
       Events:
         PutPNGObjectEvent:
           Type: S3
