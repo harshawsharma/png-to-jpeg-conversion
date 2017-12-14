@@ -1,4 +1,4 @@
-# image-conversion (png to jpeg)
+# png-to-jpeg-conversion
 
 This stack triggers a lambda function upon upload of a .png object to a S3 bucket, which is also created during the stack creation.
 
